@@ -70,6 +70,13 @@ if data_source is None:
 
 df = load_data(data_source)
 
+# Safety net — guaranteed to run every time regardless of caching behavior.
+# If a stale cached result, or a bundled Excel file that predates the GROUP
+# column, ever gets through, this still prevents a KeyError anywhere below.
+for col in REQUIRED_COLS:
+    if col not in df.columns:
+        df[col] = pd.NA
+
 # rows with a Department filled in are real, clickable menu entries;
 # rows that are just a division name (placeholder) get parked separately
 active_rows = df[df["DEPARTMENT"].notna() & (df["DEPARTMENT"].astype(str).str.strip() != "") & (df["DEPARTMENT"].astype(str) != "nan")]

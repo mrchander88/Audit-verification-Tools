@@ -34,3 +34,12 @@ If this needs to stay strictly internal (not on the public internet), deploy it 
 - Only **3** of those 16 have a working link — the rest show as "Coming Soon" until a link is added in the LINKS column
 - **BPAD, CBPAD, CLINICS, FAAD, OP PHARM** exist as division names in the sheet but have no departments/activities yet — they're shown in a collapsed "awaiting setup" section so the page doesn't look broken, but also doesn't hide that work is pending
 - Update the Excel file any time — the app re-reads it on each restart (or immediately if uploaded via the sidebar)
+
+## Round 2 changes (this update)
+
+1. **Timezone fix** — the top-bar timestamp now always shows IST (`+5:30`), using a fixed UTC offset rather than the server's local clock, so it's correct no matter where the app is hosted.
+2. **Division tiles** — the old pictogram emoji (🏢💰🧾…) are gone. Each tile is now a single light-orange card; clicking anywhere on the tile selects that division — the separate "View" button is gone. A selected tile turns solid orange with a checkmark so you can see what's active.
+3. **Hierarchical drill-down** — the Department and Audit Activities sections are hidden by default. Click a Division tile → its Departments appear (light-navy tiles, same click-anywhere behavior). Click a Department tile → its Activities appear below with LIVE/Coming Soon badges. A breadcrumb (`🏠 All Divisions › HAD › PAYROLL`) shows where you are; clicking a selected tile again collapses it.
+4. **GROUP column support** — the new Column C (`GROUP`) is now used to build a genuine **cascading dropdown**: picking a Division narrows the Group options, and picking a Group narrows the Department options. Picking a Division + Department from these dropdowns reveals the same Activities section as clicking through the tiles. The Group each activity belongs to is also shown as a small tag next to its department name in the Activities list.
+
+The code reads columns by **name**, not fixed letter position, so inserting `GROUP` at Column C didn't break anything — no other column references needed to change.
